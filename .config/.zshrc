@@ -6,7 +6,7 @@
 HISTFILE=~/.zsh_history
 HISTSIZE=10000
 SAVEHIST=10000
-setopt SHARE_HISTORY          # Partage l'historique entre sessions ouvertes
+setopt INC_APPEND_HISTORY     # Ajoute à l'historique immédiatement (sans partager entre sessions)
 setopt HIST_IGNORE_DUPS       # Ignore les doublons consécutifs
 setopt HIST_IGNORE_SPACE      # Ignore les commandes démarrant par un espace
 
@@ -45,9 +45,9 @@ bindkey '^H' backward-kill-word                       # (Remplace '^H' par la s�
 
 # --- 5. Environment & Aliases ---
 export PATH="$PATH:$HOME/.local/bin"
-alias ls='ls --color=auto'
-alias la='ls -la --color=auto'
-alias ll='ls -l --color=auto'
+alias ls='eza --color=auto'
+alias la='eza -la --color=auto'
+alias ll='eza -l --color=auto'
 alias grep='grep --color=auto'
 alias pacman='sudo pacman'
 
@@ -57,6 +57,7 @@ alias config='/usr/bin/git --git-dir=$HOME/.dotfiles.git/ --work-tree=$HOME'
 # Aliases personnalisés
 alias update-mirrors='sudo reflector --verbose --score 100 --latest 20 --fastest 10 --sort rate --save /etc/pacman.d/mirrorlist'
 alias man='batman'
+alias openmw-modded='SDL_VIDEODRIVER=x11 openmw'
 
 # --- 6. Plugins natifs ---
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh 2>/dev/null
@@ -74,8 +75,12 @@ function y() {
 # --- 8. Prompt ---
 eval "$(starship init zsh)"
 
-# --- 9. Affichage au démarrage ---
-tmux
+# --- 9. Tmux : une session par terminal ---
+if [ -z "$TMUX" ]; then
+    exec tmux new-session 2>/dev/null || exec zsh
+fi
+
+# --- 10. Affichage au démarrage ---
 echo 'Bienvenue sur Zsh'
 fastfetch
 
