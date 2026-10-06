@@ -31,11 +31,12 @@ zstyle ':completion:*' menu select                       # Menu de sélection Ta
 
 # --- 4. Raccourcis clavier (Mode Emacs pour Ctrl + Flèches) ---
 bindkey -e
-bindkey '^[[H' beginning-of-line                      # Origine[cite: 1]
-bindkey '^[[F' end-of-line                            # Fin[cite: 1]
-bindkey '^[[3~' delete-char                           # Suppr[cite: 1]
-bindkey '^[[1;5C' forward-word                        # Ctrl + Flèche Droite[cite: 1]
-bindkey '^[[1;5D' backward-word                       # Ctrl + Flèche Gauche[cite: 1]
+bindkey "${terminfo[khome]}" beginning-of-line        # Touche Début (Home)
+bindkey "${terminfo[kend]}" end-of-line               # Touche Fin (End)
+bindkey '^[[3~' delete-char                           # Suppr
+bindkey '^[[3;5~' kill-word                           # Ctrl + Suppr (efface mot suivant)
+bindkey '^[[1;5C' forward-word                        # Ctrl + Flèche Droite
+bindkey '^[[1;5D' backward-word                       # Ctrl + Flèche Gauche
 
 # Backspace normal : efface un seul caractère
 bindkey '^?' backward-delete-char
